@@ -16,7 +16,6 @@ const App = () => {
   const [humidity, setHumidity]=useState('0');
   const [power, setPower] = useState('0');
   const [vibration, setVibration]=useState('0');
-  const [mlurl, setMLurl]=useState('');
   const [status, setStatus]=useState('No maintenance required')
   const [trigger, setTrigger]=useState(0);
 
@@ -35,12 +34,9 @@ const App = () => {
         setStatus(msg);
       });
       
-      // .catch((error) => alert(`Error: ${error.message} Unprocessable data`));
   };
 
-  // const set = (msg) => {
-  //   setStatus(msg);
-  // };
+  
   const firebaseGet = () =>{
     const fetchRef = ref(rdb,'motordat/');
     onValue(fetchRef, (snapshot) =>{
@@ -60,7 +56,6 @@ const App = () => {
         setHumidity(dataone[0]?.humidity);
         setVibration(dataone[0]?.vibration);
         setPower(dataone[0]?.actualVoltage*dataone[0]?.actualCurrent);
-        setMLurl(dataone[0]?.mlmodel);
         console.log('setValues method called');
         
       }
@@ -75,7 +70,7 @@ const App = () => {
   }
 
   useEffect(()=>{
-    
+      firebaseGet();
     const timeout = setTimeout(() => {
       firebaseGet();
       mlCode();
